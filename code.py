@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.linalg import eigh
+from sklearn.cluster import DBSCAN, OPTICS
 from sklearn.cluster import SpectralClustering
 
 def ReadData(path, normalize=False) :
@@ -9,7 +10,7 @@ def ReadData(path, normalize=False) :
     # Dropping the month column
     df = df.drop(columns=["mnth", "total_liability", "total_cashsetoff", "total_itc_claimed"], axis=1)
     # Grouping by id and taking the mean
-    df = df.groupby(["id"]).mean()
+    df = df.groupby(["id"]).mean().drop_duplicates()
     # Normalizing the data
     if normalize is True:
         df = (df - df.mean()) / df.std()
@@ -25,6 +26,6 @@ def GetEigenValues(matrix) :
 if __name__ == "__main__" :
     # Read data
     data = ReadData("./resources/data_class.csv")
-    # Analyzing the eigenvalues of the covariance matrix
-    eigv = GetEigenValues(data[0:1000])
-    print(eigv)
+    # Spectral Clustering
+    clusters = OPTICS(min_samples=5, n_jobs=-1).fit(data)
+    print(clusters.labels_)
