@@ -16404,6 +16404,92 @@ div#notebook {
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Clustering">Clustering<a class="anchor-link" href="#Clustering">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="K-Means">K-Means<a class="anchor-link" href="#K-Means">&#182;</a></h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>To get an idea of what we are dealing with, we performed vanilla kmeans first and examined the clusters and their densities.
+<br></li>
+</ul>
+<p><img src="./images/code_kmeans.png" alt=""></p>
+<ul>
+<li>We then tried clustering for n_clusters varying from 2 to 19 and analyzed the sizes of the clusters.
+<br></li>
+</ul>
+<p><img src="./images/kmeans.png" alt=""></p>
+<ul>
+<li>We then found out that no matter how big the number of clusters is, there is always one huge cluster which takes up most of the points.</li>
+<li>That cluster is the first cluster in the above image. </li>
+<li>Arrays generated contains the (cluster_number, cluster_size) pairs and we can see that the first one always has a lot of points.</li>
+<li>This is consistent with what we'd expect because fraud is assumed to be rare and this cluster might represent the genuine set of taxpayers.</li>
+<li>KMeans itself performs well here and Spectral Clustering which again uses kmeans but with a twist might end up giving similar results.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Spectral-Clustering">Spectral Clustering<a class="anchor-link" href="#Spectral-Clustering">&#182;</a></h5>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Just sending the data to Spectral Clustering gives a graph which is not fully connected.</li>
+<li>This happens because when we use the rbf kernel, the distance values become large and the values become zeros.</li>
+<li>This creates a graph that will not work for spectral clustering.</li>
+<li>To avoid this problem, I used minmax normalization on the columns.
+<br></li>
+</ul>
+<p><img src="./images/code_minmax.png" alt="">
+<br></p>
+<ul>
+<li>We then tried various number of clusters and set a parameter called threshold on the cluster density to regulate the number of frauds.</li>
+<li>We also plotted the number of frauds vs the number of clusters.
+<br></li>
+</ul>
+<p><img src="./images/code_sc.png" alt=""></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Clusters-vs-frauds">Clusters vs frauds<a class="anchor-link" href="#Clusters-vs-frauds">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="./images/plot.png" alt=""></p>
+<ul>
+<li>14 was found to be the optimal cluster size with most number of frauds detected.</li>
+<li>In total 201 frauds were found, which are written in the results.txt file.</li>
+</ul>
+
+</div>
+</div>
+</div>
     </div>
   </div>
 </body>
